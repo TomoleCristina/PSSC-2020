@@ -9,10 +9,18 @@ using static PortExt;
 
 namespace Tema6
 {
-    public static class Domain
+    public static class BoundedContextDSL
     {
-        public static Port<CreateReplyResult.IPublishReplyResult> ValidateReply(int questionId, int authorId, string answer)
-            => NewPort<CreateReplyCmd, CreateReplyResult.IPublishReplyResult>(new CreateReplyCmd(authorId, questionId, answer));
+
+        /// <summary>
+        /// CreateReplyCmd -> ICreateReplyResult
+        /// </summary>
+        /// <param name="questionId"></param>
+        /// <param name="userId"></param>
+        /// <param name="answer"></param>
+        /// <returns></returns>
+        public static Port<CreateReplyResult.ICreateReplyResult> ValidateReply(int questionId, int userId, string answer)
+            => NewPort<CreateReplyCmd, CreateReplyResult.ICreateReplyResult>(new CreateReplyCmd(userId, questionId, answer));
 
         public static Port<CheckLanguageResult.ICheckLanguageResult> CheckLanguage(string text)
             => NewPort<CheckLanguageCmd, CheckLanguageResult.ICheckLanguageResult>(new CheckLanguageCmd(text));
@@ -22,6 +30,5 @@ namespace Tema6
 
         public static Port<ReplyPublishedAckSentToReplyAuthorResult.IReplyPublishedAckSentToReplyAuthorResult> SendAckToReplyAuthor(int replyid, int questionid, string reply)
         => NewPort<ReplyPublishedAckSentToReplyAuthorCmd, ReplyPublishedAckSentToReplyAuthorResult.IReplyPublishedAckSentToReplyAuthorResult>(new ReplyPublishedAckSentToReplyAuthorCmd(replyid, questionid, reply));
-
-    } 
+    }
 }

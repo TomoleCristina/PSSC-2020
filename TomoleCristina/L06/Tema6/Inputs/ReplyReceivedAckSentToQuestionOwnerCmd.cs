@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Tema6.Inputs
 {
-   public class ReplyReceivedAckSentToQuestionOwnerCmd
+    public class ReplyReceivedAckSentToQuestionOwnerCmd
     {
         public int AuthorId { get; }
         public int QuestionId { get; }

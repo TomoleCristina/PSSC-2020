@@ -21,14 +21,14 @@ namespace Tema6.Models
     public class Reply
     {
         public int QuestionId { get; }
-        public string AuthorId { get; }
         public string Answer { get; }
+        public int AuthorId { get; }
 
-        public Reply(int questionId, string authorId, string answer)
+        public Reply(int questionId, string answer, int authorId)
         {
             QuestionId = questionId;
-            AuthorId = authorId;
             Answer = answer;
+            AuthorId = authorId;
         }
     }
 }

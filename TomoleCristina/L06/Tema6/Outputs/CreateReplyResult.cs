@@ -10,9 +10,9 @@ namespace Tema6.Outputs
     [AsChoice]
     public static partial class CreateReplyResult
     {
-        public interface IPublishReplyResult { }
+        public interface ICreateReplyResult { }
 
-        public class ReplyValid : IPublishReplyResult
+        public class ReplyValid : ICreateReplyResult
         {
             public Reply Reply { get; }
 
@@ -22,23 +22,22 @@ namespace Tema6.Outputs
             }
         }
 
-        public class ReplyInvalid : IPublishReplyResult
+        public class InvalidReply : ICreateReplyResult
         {
             public string Reasons { get; }
 
-            public ReplyInvalid(string reasons)
+            public InvalidReply(string reasons)
             {
                 Reasons = reasons;
             }
         }
-        public class InvalidRequest : IPublishReplyResult
+
+        public class InvalidRequest : ICreateReplyResult
         {
             public string ValidationErrors { get; }
-            public CreateReplyCmd Cmd { get; }
-            public InvalidRequest(string validationErrors, CreateReplyCmd cmd)
+            public InvalidRequest(string validationErrors)
             {
                 ValidationErrors = validationErrors;
-                Cmd = cmd;
             }
         }
 

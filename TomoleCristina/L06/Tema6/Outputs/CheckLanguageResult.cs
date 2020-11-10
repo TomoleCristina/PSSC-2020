@@ -6,9 +6,9 @@ using CSharp.Choices;
 namespace Tema6.Outputs
 {
     [AsChoice]
-    public static partial class CheckLanguageResult 
+    public static partial class CheckLanguageResult
     {
-        public interface ICheckLanguageResult {}
+        public interface ICheckLanguageResult { }
 
         public class TextChecked : ICheckLanguageResult
         {
@@ -28,3 +28,4 @@ namespace Tema6.Outputs
         }
     }
 }
+
