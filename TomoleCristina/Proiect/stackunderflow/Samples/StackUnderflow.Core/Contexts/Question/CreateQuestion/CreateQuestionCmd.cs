@@ -11,11 +11,12 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestion
     public class CreateQuestionCmd
     {
         [Required]
-        public string Title { get; private set; }           //titlul intrebarii
+        public string Title { get; set; }           //titlul intrebarii
         [Required]
-        public string Body { get; private set; }            //descrierea detaliala a intrebarii
+        public string Body { get; set; }            //descrierea detaliala a intrebarii
         [Required]
         public string Tags { get; set; }                     //domeniul/domeniile din care face parte intrebarea
+        public CreateQuestionCmd() { }
         public CreateQuestionCmd(string title, string body, string tags)
         {
             Title = title;
