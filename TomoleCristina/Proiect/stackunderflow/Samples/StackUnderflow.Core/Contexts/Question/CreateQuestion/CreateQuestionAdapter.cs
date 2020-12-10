@@ -9,9 +9,9 @@ using static StackUnderflow.Domain.Core.Contexts.Question.CreateQuestion.CreateQ
 
 namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestion
 {
-    class CreateQuestionAdapter : Adapter<CreateQuestionCmd, CreateQuestionResult.ICreateQuestionResult, QuestionWriteContext, QuestionDependencies>
+    class CreateQuestionAdapter : Adapter<CreateQuestionCmd, ICreateQuestionResult, QuestionWriteContext, QuestionDependencies>
     {
-        public override Task PostConditions(CreateQuestionCmd cmd, CreateQuestionResult.ICreateQuestionResult result, QuestionWriteContext state)
+        public override Task PostConditions(CreateQuestionCmd cmd, ICreateQuestionResult result, QuestionWriteContext state)
         {
             return Task.CompletedTask;
         }
@@ -32,7 +32,7 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestion
 
         private ICreateQuestionResult AddQuestion(QuestionWriteContext state, object v)
         {
-            return new QuestionPosted(new Guid("1"), "Title", "Body", "Tag");
+            return new QuestionPosted(new Guid(), "Titlu", "Descriere intrebare", "Domenii intrebare");
         }
 
         private object CreateQuestionFromCmd(CreateQuestionCmd cmd)

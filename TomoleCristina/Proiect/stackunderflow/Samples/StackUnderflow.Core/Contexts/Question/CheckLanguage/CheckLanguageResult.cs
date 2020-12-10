@@ -12,10 +12,10 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CheckLanguage
 
         public class TextChecked : ICheckLanguageResult
         {
-            public int Certainly { get; }
-            public TextChecked(int certainly)
+            public string Message { get; }
+            public TextChecked(string message)
             {
-                Certainly = certainly;
+                Message = message;
             }
         }
         public class TextNotCheck : ICheckLanguageResult

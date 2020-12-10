@@ -5,6 +5,7 @@ using CSharp.Choices;
 
 namespace StackUnderflow.Domain.Core.Contexts.Question.SendAckToQuestionOwner
 {
+    [AsChoice]
     public static partial class SendAckToQuestionOwnerResult
     {
         public interface ISendAckToQuestionOwnerResult { }
