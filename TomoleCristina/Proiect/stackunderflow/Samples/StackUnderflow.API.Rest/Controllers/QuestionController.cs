@@ -44,9 +44,9 @@ namespace StackUnderflow.API.AspNetCore.Controllers
             // _dbContext.Questions.AttachRange(questions);
             // var ctx = new QuestionWriteContext(new EFList<Questions>(_dbContext.Questions));
             var ctx = new QuestionWriteContext(questions);
-
-            var expr = from createTenantResult in QuestionContext.CreateQuestion(cmd)
-                       select createTenantResult;
+            
+            var expr = from createQuestionResult in QuestionContext.CreateQuestion(cmd)
+                       select createQuestionResult;
 
             /* var expr = from createTenantResult in QuestionContext.CreateQuestion(cmd)
                         from checkLanguageResult in QuestionContext.CheckLanguage(new CheckLanguageCmd(cmd.Body))
