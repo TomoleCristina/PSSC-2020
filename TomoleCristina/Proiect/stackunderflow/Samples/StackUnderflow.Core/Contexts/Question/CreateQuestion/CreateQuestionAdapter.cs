@@ -21,6 +21,7 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestion
             var workflow = from valid in cmd.TryValidate()
                            let t = AddQuestion(state, CreateQuestionFromCmd(cmd))
                            select t;
+            state.Questions.Add(new DatabaseModel.Models.Questions { QuestionId = new Guid("20000000-0000-0000-0000-0000000000000"), Title = "Titlul intrebarii", Body = "Descrierea intrebarii", Tags = "Tag-urile intrebarii" });
 
             var result = await workflow.Match(
                 Succ: r => r,
@@ -32,7 +33,7 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CreateQuestion
 
         private ICreateQuestionResult AddQuestion(QuestionWriteContext state, object v)
         {
-            return new QuestionPosted(new Guid(), "Titlu", "Descriere intrebare", "Domenii intrebare");
+            return new QuestionPosted(Guid.NewGuid(), "Titlu", "Descriere intrebare", "Domenii intrebare");
         }
 
         private object CreateQuestionFromCmd(CreateQuestionCmd cmd)

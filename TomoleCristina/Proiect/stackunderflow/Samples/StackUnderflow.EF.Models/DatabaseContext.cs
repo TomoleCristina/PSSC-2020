@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using StackUnderflow.DatabaseModel.Models;
 
-namespace StackUnderflow.EF
+namespace StackUnderflow.EF.Models
 {
     public class DatabaseContext : DbContext
     {

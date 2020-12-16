@@ -41,30 +41,29 @@ namespace StackUnderflow.API.AspNetCore.Controllers
             {
                 var dep = new QuestionDependencies();
                 var questions = await _dbContext.Questions.ToListAsync();
-            // _dbContext.Questions.AttachRange(questions);
-            // var ctx = new QuestionWriteContext(new EFList<Questions>(_dbContext.Questions));
-            var ctx = new QuestionWriteContext(questions);
-            
+             //_dbContext.Questions.AttachRange(questions);
+             var ctx = new QuestionWriteContext(new EFList<Questions>(_dbContext.Questions));
+           // var ctx = new QuestionWriteContext(questions);
+
             var expr = from createQuestionResult in QuestionContext.CreateQuestion(cmd)
                        select createQuestionResult;
 
-            /* var expr = from createTenantResult in QuestionContext.CreateQuestion(cmd)
+            /* var expr = from createQuestionResult in QuestionContext.CreateQuestion(cmd)
                         from checkLanguageResult in QuestionContext.CheckLanguage(new CheckLanguageCmd(cmd.Body))
                         from sendAckToQuestionOwnerCmd in QuestionContext.SendAckToQuestionOwner(new SendAckToQuestionOwnerCmd(1, 2))
-                        select createTenantResult; */
+                        select createQuestionResult */
 
             var r = await _interpreter.Interpret(expr, ctx, dep);
 
+            await _dbContext.Questions.Add(new DatabaseModel.Models.Questions { Title = cmd.Title, Body = cmd.Body, Tags = cmd.Tags }).GetDatabaseValuesAsync();
+            //var question=await _dbContext.Questions.Where(r => r.QuestionId== new Guid("20000000-0000-0000-0000-000000000000")).SingleOrDefaultAsync();
+           
+           // _dbContext.Questions.Update(question);
             await _dbContext.SaveChangesAsync();
 
-            await _dbContext.Questions.Add(new DatabaseModel.Models.Questions { QuestionId = 1, Title = cmd.Title, Body = cmd.Body, Tags = cmd.Tags }).GetDatabaseValuesAsync();
-             // var question=await _dbContext.Questions.Where(r => r.QuestionId==1).SingleOrDefaultAsync();
-
-          //  _dbContext.Questions.Update(question);
-
             return r.Match(
-                    created => (IActionResult)Ok("Posted"),
-                    notcreated => BadRequest("Not posted"),
+                    created => (IActionResult)Ok(created.Body),
+                    notcreated => BadRequest("NotPosted"),
                     invalidRequest => ValidationProblem()
                     );
             }

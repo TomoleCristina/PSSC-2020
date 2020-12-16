@@ -18,10 +18,10 @@ namespace StackUnderflow.Domain.Core.Contexts.Question.CheckLanguage
                 Message = message;
             }
         }
-        public class TextNotCheck : ICheckLanguageResult
+        public class TextNotChecked : ICheckLanguageResult
         {
             public string ErrorMessage { get; }
-            public TextNotCheck(string errorMessage)
+            public TextNotChecked(string errorMessage)
             {
                 ErrorMessage = errorMessage;
             }
