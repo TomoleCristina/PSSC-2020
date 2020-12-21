@@ -26,7 +26,6 @@ namespace StackUnderflow.EF.Models
         public virtual DbSet<PostTag> PostTag { get; set; }
         public virtual DbSet<PostType> PostType { get; set; }
         public virtual DbSet<PostView> PostView { get; set; }
-        public virtual DbSet<Tag> Questions { get; set; }
         public virtual DbSet<Tag> Tag { get; set; }
         public virtual DbSet<Tenant> Tenant { get; set; }
         public virtual DbSet<TenantUser> TenantUser { get; set; }
@@ -192,72 +191,6 @@ namespace StackUnderflow.EF.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PostView_TenantUser");
             });
-
-           /* modelBuilder.Entity<Questions>(entity =>
-            {
-                entity.HasKey(e => new { e.TenantId, e.PostId });
-
-                entity.HasIndex(e => e.PostTypeId)
-                    .HasName("FK_Post_PostType");
-
-                entity.HasIndex(e => new { e.ParentPostId, e.TenantId })
-                    .HasName("FK_Post_Post");
-
-                entity.HasIndex(e => new { e.TenantId, e.ClosedBy })
-                    .HasName("FK_Post_TenantUser8");
-
-                entity.HasIndex(e => new { e.TenantId, e.LastUpdatedBy })
-                    .HasName("FK_Post_TenantUser15");
-
-                entity.HasIndex(e => new { e.TenantId, e.PostedBy })
-                    .HasName("FK_Post_TenantUser");
-
-                entity.Property(e => e.PostId).ValueGeneratedOnAdd();
-
-                entity.Property(e => e.ClosedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.DateCreated)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.PostText).IsRequired();
-
-                entity.Property(e => e.RowGuid).HasDefaultValueSql("(newid())");
-
-                entity.Property(e => e.Title)
-                    .IsRequired()
-                    .HasMaxLength(255);
-
-                entity.Ignore(p => p.SysStartTime);
-                entity.Ignore(p => p.SysEndTime);
-
-                entity.HasOne(d => d.PostType)
-                    .WithMany(p => p.Post)
-                    .HasForeignKey(d => d.PostTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Post_PostType");
-
-                entity.HasOne(d => d.TenantUser)
-                    .WithMany(p => p.PostTenantUser)
-                    .HasForeignKey(d => new { d.TenantId, d.ClosedBy })
-                    .HasConstraintName("FK_Post_TenantUser_ClosedBy");
-
-                entity.HasOne(d => d.TenantUserNavigation)
-                    .WithMany(p => p.PostTenantUserNavigation)
-                    .HasForeignKey(d => new { d.TenantId, d.LastUpdatedBy })
-                    .HasConstraintName("FK_Post_TenantUser_LastUpdatedBy");
-
-                entity.HasOne(d => d.PostNavigation)
-                    .WithMany(p => p.InversePostNavigation)
-                    .HasForeignKey(d => new { d.TenantId, d.ParentPostId })
-                    .HasConstraintName("FK_Post_Post");
-
-                entity.HasOne(d => d.TenantUser1)
-                    .WithMany(p => p.PostTenantUser1)
-                    .HasForeignKey(d => new { d.TenantId, d.PostedBy })
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Post_TenantUser");
-            }); */
 
             modelBuilder.Entity<Tag>(entity =>
             {

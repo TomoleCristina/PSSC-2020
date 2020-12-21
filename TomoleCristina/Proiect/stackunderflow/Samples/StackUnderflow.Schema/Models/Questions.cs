@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StackUnderflow.DatabaseModel.Models
@@ -8,6 +9,7 @@ namespace StackUnderflow.DatabaseModel.Models
     [Table("Questions")]
     public class Questions
     {
+        [Key]
         public Guid QuestionId { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }

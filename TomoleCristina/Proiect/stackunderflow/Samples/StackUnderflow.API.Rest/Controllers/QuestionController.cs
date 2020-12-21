@@ -55,7 +55,7 @@ namespace StackUnderflow.API.AspNetCore.Controllers
 
             var r = await _interpreter.Interpret(expr, ctx, dep);
 
-            await _dbContext.Questions.Add(new DatabaseModel.Models.Questions { Title = cmd.Title, Body = cmd.Body, Tags = cmd.Tags }).GetDatabaseValuesAsync();
+             _dbContext.Questions.Add(new DatabaseModel.Models.Questions { QuestionId= Guid.NewGuid(),Title = cmd.Title, Body = cmd.Body, Tags = cmd.Tags });
             //var question=await _dbContext.Questions.Where(r => r.QuestionId== new Guid("20000000-0000-0000-0000-000000000000")).SingleOrDefaultAsync();
            
            // _dbContext.Questions.Update(question);
