@@ -45,7 +45,7 @@ namespace FakeSO.API.Rest
 
             services.AddDbContext<DatabaseContext>(builder =>
             {
-                var connectionString = "Server=TIII/MSSQLSERVER01;Database=StackUnderflow;Trusted_Connection=true";
+                var connectionString = "Server=TIII\\MSSQLSERVER01;Database=StackUnderflow;Trusted_Connection=true";
                 builder.UseSqlServer(connectionString);
                // Configuration.GetConnectionString("StackUnderflow")
             });

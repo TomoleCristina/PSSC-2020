@@ -43,15 +43,15 @@ namespace StackUnderflow.API.AspNetCore.Controllers
                 var questions = await _dbContext.Questions.ToListAsync();
              //_dbContext.Questions.AttachRange(questions);
              var ctx = new QuestionWriteContext(new EFList<Questions>(_dbContext.Questions));
-           // var ctx = new QuestionWriteContext(questions);
+            // var ctx = new QuestionWriteContext(questions);
 
-            var expr = from createQuestionResult in QuestionContext.CreateQuestion(cmd)
-                       select createQuestionResult;
+             var expr = from createQuestionResult in QuestionContext.CreateQuestion(cmd)
+                      select createQuestionResult;
 
             /* var expr = from createQuestionResult in QuestionContext.CreateQuestion(cmd)
-                        from checkLanguageResult in QuestionContext.CheckLanguage(new CheckLanguageCmd(cmd.Body))
-                        from sendAckToQuestionOwnerCmd in QuestionContext.SendAckToQuestionOwner(new SendAckToQuestionOwnerCmd(1, 2))
-                        select createQuestionResult */
+                       from checkLanguageResult in QuestionContext.CheckLanguage(new CheckLanguageCmd(cmd.Body))
+                       from sendAckToQuestionOwnerCmd in QuestionContext.SendAckToQuestionOwner(new SendAckToQuestionOwnerCmd(1, 2))
+                       select createQuestionResult; */
 
             var r = await _interpreter.Interpret(expr, ctx, dep);
 
