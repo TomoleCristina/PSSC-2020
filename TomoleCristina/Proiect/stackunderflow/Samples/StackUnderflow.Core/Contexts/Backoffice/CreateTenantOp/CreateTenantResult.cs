@@ -12,7 +12,7 @@ namespace StackUnderflow.Domain.Schema.Backoffice.CreateTenantOp
     [AsChoice]
     public static partial class CreateTenantResult
     {
-        public interface ICreateTenantResult : IDynClonable { }
+        public interface ICreateTenantResult: IDynClonable { }
 
         public class TenantCreated : ICreateTenantResult
         {

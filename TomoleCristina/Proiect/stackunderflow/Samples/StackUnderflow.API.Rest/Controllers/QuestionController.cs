@@ -21,6 +21,8 @@ using StackUnderflow.DatabaseModel.Models;
 using StackUnderflow.Domain.Core.Contexts.Question.CheckLanguage;
 using StackUnderflow.Domain.Core.Contexts.Question.SendAckToQuestionOwner;
 using static StackUnderflow.Domain.Core.Contexts.Question.CreateQuestion.CreateQuestionResult;
+using Orleans;
+
 namespace StackUnderflow.API.AspNetCore.Controllers
 {
         [ApiController]
@@ -41,7 +43,7 @@ namespace StackUnderflow.API.AspNetCore.Controllers
             {
                 var dep = new QuestionDependencies();
                 var questions = await _dbContext.Questions.ToListAsync();
-             //_dbContext.Questions.AttachRange(questions);
+                _dbContext.Questions.AttachRange(questions);
              var ctx = new QuestionWriteContext(new EFList<Questions>(_dbContext.Questions));
             // var ctx = new QuestionWriteContext(questions);
 
