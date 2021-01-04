@@ -25,42 +25,61 @@ using Orleans;
 
 namespace StackUnderflow.API.AspNetCore.Controllers
 {
-        [ApiController]
-        [Route("question")]
-        public class QuestionController : ControllerBase
+    [ApiController]
+    [Route("question")]
+    public class QuestionController : ControllerBase
+    {
+        private readonly IInterpreterAsync _interpreter;
+        private readonly DatabaseContext _dbContext;
+        private readonly IClusterClient clusterClient;
+
+        public QuestionController(IInterpreterAsync interpreter, DatabaseContext dbContext, IClusterClient clusterClient)
         {
-            private readonly IInterpreterAsync _interpreter;
-            private readonly DatabaseContext _dbContext;
+            _interpreter = interpreter;
+            _dbContext = dbContext;
+            this.clusterClient = clusterClient;
+        }
 
-            public QuestionController(IInterpreterAsync interpreter, DatabaseContext dbContext)
-            {
-                _interpreter = interpreter;
-                _dbContext = dbContext;
-            }
+        [HttpPost("CreateQuestionStream")]
+        public async Task<IActionResult> CreateQuestion()
+        {
 
-            [HttpPost("CreateQuestion")]
-            public async Task<IActionResult> CreateQuestion([FromBody] CreateQuestionCmd cmd)
+            //create question workflow
+            var stream = clusterClient.GetStreamProvider("SMSProvider").GetStream<Post>(Guid.Empty, "questions");
+            var post = new Post
             {
-                var dep = new QuestionDependencies();
-                var questions = await _dbContext.Questions.ToListAsync();
-                _dbContext.Questions.AttachRange(questions);
-             var ctx = new QuestionWriteContext(new EFList<Questions>(_dbContext.Questions));
+                PostId = 2,
+                PostText = "My question2"
+            };
+
+            await stream.OnNextAsync(post);
+            return Ok();
+        }
+
+        [HttpPost("CreateQuestion")]
+        public async Task<IActionResult> CreateQuestion([FromBody] CreateQuestionCmd cmd)
+        {
+            var dep = new QuestionDependencies();
+            var questions = await _dbContext.Questions.ToListAsync();
+            _dbContext.Questions.AttachRange(questions);
+            var ctx = new QuestionWriteContext(new EFList<Questions>(_dbContext.Questions));
             // var ctx = new QuestionWriteContext(questions);
 
-             var expr = from createQuestionResult in QuestionContext.CreateQuestion(cmd)
-                      select createQuestionResult;
+            var expr = from createQuestionResult in QuestionContext.CreateQuestion(cmd)
+                       from checkLanguageResult in QuestionContext.CheckLanguage(new CheckLanguageCmd(cmd.Body))
+                       select createQuestionResult;
 
             /* var expr = from createQuestionResult in QuestionContext.CreateQuestion(cmd)
-                       from checkLanguageResult in QuestionContext.CheckLanguage(new CheckLanguageCmd(cmd.Body))
-                       from sendAckToQuestionOwnerCmd in QuestionContext.SendAckToQuestionOwner(new SendAckToQuestionOwnerCmd(1, 2))
-                       select createQuestionResult; */
+                        from checkLanguageResult in QuestionContext.CheckLanguage(new CheckLanguageCmd(cmd.Body))
+                        from sendAckToQuestionOwner in QuestionContext.SendAckToQuestionOwner(new SendAckToQuestionOwnerCmd(1, 2))
+                        select createQuestionResult; */
 
             var r = await _interpreter.Interpret(expr, ctx, dep);
 
-             _dbContext.Questions.Add(new DatabaseModel.Models.Questions { QuestionId= Guid.NewGuid(),Title = cmd.Title, Body = cmd.Body, Tags = cmd.Tags });
+            _dbContext.Questions.Add(new DatabaseModel.Models.Questions { QuestionId = Guid.NewGuid(), Title = cmd.Title, Body = cmd.Body, Tags = cmd.Tags });
             //var question=await _dbContext.Questions.Where(r => r.QuestionId== new Guid("20000000-0000-0000-0000-000000000000")).SingleOrDefaultAsync();
-           
-           // _dbContext.Questions.Update(question);
+
+            // _dbContext.Questions.Update(question);
             await _dbContext.SaveChangesAsync();
 
             return r.Match(
@@ -68,6 +87,6 @@ namespace StackUnderflow.API.AspNetCore.Controllers
                     notcreated => BadRequest("NotPosted"),
                     invalidRequest => ValidationProblem()
                     );
-            }
         }
     }
+}
