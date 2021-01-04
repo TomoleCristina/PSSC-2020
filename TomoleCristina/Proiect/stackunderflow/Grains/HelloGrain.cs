@@ -23,7 +23,7 @@ namespace Grains
 
 
             logger.LogInformation($"\n SayHello message received: greeting = '{greeting}'");
-            return ($"\n Client said: '{greeting}', so HelloGrain says: Hello!");
+            return ($"\n Client said: '{greeting}', so HelloGrain says: E-mail sent!");
         }
     }
 }
